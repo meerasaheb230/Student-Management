@@ -6,6 +6,7 @@ const {authMiddleware}=require("../../middleware/auth.middleware");
 
 
 router.get("/students",authMiddleware,studentController.getAllStudents);
+router.get("/students/:StudentId",authMiddleware,studentController.getStudentById);
 router.post("/students",authMiddleware,studentController.newStudent);
 router.put("/students/:StudentId",authMiddleware,studentController.updateStudent);
 router.delete("/students/:StudentId",authMiddleware,studentController.deleteStudent);

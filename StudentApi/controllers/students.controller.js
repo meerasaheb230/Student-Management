@@ -6,13 +6,67 @@ const getAllStudents=async (req,res)=>{
   try {
     const students = await StudentModel.find({
       isDeleted: false,
-      userId: res.locals.userId,
+      createdBy: res.locals.userId,
     }); 
     return res.status(200).json({
       success: true,
       code: 200,
       message: "students list",
       data: { students },
+      error: null,
+      resource: req.originalUrl,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      code: 500,
+      message: error.message,
+      data: null,
+      error: error,
+      resource: req.originalUrl,
+    });
+  }
+};
+
+const getStudentById = async (req, res) => {
+  const StudentId = req.params.StudentId;
+  if (!isValidObjectId(StudentId)) {
+    return res.status(400).json({
+      success: false,
+      code: 400,
+      message: "Invalid StudentId",
+      data: null,
+      error: null,
+      resource: req.originalUrl,
+    });
+  }
+  try {
+    const student = await StudentModel.findOne({ _id: StudentId, isDeleted: false });
+    if (!student) {
+      return res.status(404).json({
+        success: false,
+        code: 404,
+        message: "Invalid request, student id does not exist",
+        data: null,
+        error: null,
+        resource: req.originalUrl,
+      });
+    }
+    if (student.createdBy.toString() !== res.locals.userId) {
+      return res.status(403).json({
+        success: false,
+        code: 403,
+        message: "Invalid request, forbidden",
+        data: null,
+        error: null,
+        resource: req.originalUrl,
+      });
+    }
+    return res.status(200).json({
+      success: true,
+      code: 200,
+      message: "student details",
+      data: { student },
       error: null,
       resource: req.originalUrl,
     });
@@ -299,5 +353,6 @@ module.exports={
     getAllStudents,
     newStudent,
     updateStudent,
-    deleteStudent
+    deleteStudent,
+    getStudentById
 }
