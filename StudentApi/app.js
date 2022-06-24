@@ -2,11 +2,14 @@ const express=require("express");
 const http=require("http");
 const mongoose=require("mongoose");
 const cors=require("cors");
-
+const morgan = require('morgan');
 
 const app=express();
 const server=http.createServer(app);
 const PORT=process.env.PORT || 3001;
+
+
+app.use(morgan('tiny'));
 
 
 app.use(express.json({ limit: "5mb" }));
@@ -19,9 +22,10 @@ app.use(cors());
 
 
 const userRoutes=require("./routes/user.Router/user.router");
+const studentsRoute=require("./routes/students.router/students.router");
 
-
-app.use("/",userRoutes);
+app.use("/auth",userRoutes);
+app.use("/",studentsRoute);
 
 
 mongoose
