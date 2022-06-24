@@ -13,7 +13,7 @@ const studentSchema = new mongoose.Schema(
         pincode: Number,
       },
 
-    mobile:{ type: String, required: true },
+    mobile:{ type: Number, required: true },
     isDeleted: { type: Boolean, default: false },
     
     deletedAt: { type: Date, default: null },
