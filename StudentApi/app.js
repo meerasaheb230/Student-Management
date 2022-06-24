@@ -13,9 +13,15 @@ app.use(express.json({ limit: "5mb" }));
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
-app.get("/students",(req,res)=>{
-    res.send("hello-users");
-})
+// app.get("/students",(req,res)=>{
+//     res.send("hello-users");
+// })
+
+
+const userRoutes=require("./routes/user.Router/user.router");
+
+
+app.use("/",userRoutes);
 
 
 mongoose
