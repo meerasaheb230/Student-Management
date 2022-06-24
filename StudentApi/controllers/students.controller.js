@@ -3,7 +3,29 @@ const { isValidObjectId } = require("mongoose");
 const StudentModel=require("../models/students.model");
 
 const getAllStudents=async (req,res)=>{
-    res.send("welcome students");
+  try {
+    const students = await StudentModel.find({
+      isDeleted: false,
+      userId: res.locals.userId,
+    }); 
+    return res.status(200).json({
+      success: true,
+      code: 200,
+      message: "students list",
+      data: { students },
+      error: null,
+      resource: req.originalUrl,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      code: 500,
+      message: error.message,
+      data: null,
+      error: error,
+      resource: req.originalUrl,
+    });
+  }
 };
 
 const newStudent=async (req,res)=>{
