@@ -1,0 +1,19 @@
+
+.form-group{
+    text-align: center;
+    align-items: center;
+    margin: auto;
+    /* position: relative; */
+    margin-top: auto;
+    align-items: center;
+    margin-top: 20rem;
+    min-width: 50vh;
+    /* color: white; */
+}
+#input-group{
+    margin-bottom: 1rem;
+    text-align: center;
+    flex: auto;
+    border-radius: 15rem;
+    
+}

@@ -1,0 +1,34 @@
+.container{
+    /* text-align: center;
+    height: 20rem;
+    width: 20rem;
+    background-color: blue;
+    /* border-radius: 15px; */
+    /* border-bottom: 10rem; */
+  /* display: inline-block; */
+    background-image: url("../../../web-designer-2443766_1280.jpg");
+    background-repeat: no-repeat;
+    background-size:cover;
+    min-height: 700px;
+
+    background-position: center;
+    background-attachment: fixed;
+    position: static;
+    
+
+
+}
+
+.input-group{
+    padding-bottom: 1rem;
+}
+
+.regisration{
+    text-align: center;
+    height: 400px;
+    width: 380px;
+    margin: auto;
+    border-radius: 20px;
+    background: rgba(0, 0, 0, 0.4);
+    padding-top: 10rem;
+}
