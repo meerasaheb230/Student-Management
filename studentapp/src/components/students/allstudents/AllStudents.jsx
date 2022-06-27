@@ -8,19 +8,6 @@ import axios from "axios";
 
 export const AllStudents=()=>{
     const [students,setStudents]=useState([]);
-// const [students ,setStudents]=useState([{
-//     title: "",
-//       name: "",
-//       collegeName:"",
-//       gender: "",
-//       address:{street: "",
-//       city: "",
-//       pincode: "",},
-//       mobile: "",
-// }])
-
-// const [student,setStudent]=useState([]);
-
 useEffect(() => {
     const token = localStorage.getItem("accessToken");
     axios
@@ -33,8 +20,7 @@ useEffect(() => {
       .then((response) => {
         const students = response.data.data.students;
         setStudents(students);
-        // setStudents(students);
-        // console.log(students);
+       
       })
       .catch((error) => {
         console.error(error);
@@ -46,14 +32,12 @@ useEffect(() => {
     return (
         <div className="container-students text-center text-white pt-5">
 
-                        {/* {students.map((student) => (
-                           <TodoItem todo={todo} key={todo._id}  />
-                      ))} */}
+                        
                         {students.map((student)=>(
                             <div className="box">
                                 <div className="row">
                                 <div className="col">
-                             <div className="card">
+                             <div className="card" key={student._id}>
                              <img src={book}  alt="book"  className="card-img-top"/>
                              <img src={img}  alt="human icon"  className="image"/>
                                  <div className="card-body">

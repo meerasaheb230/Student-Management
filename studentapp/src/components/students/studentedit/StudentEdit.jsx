@@ -1,211 +1,92 @@
-import {  useState } from "react";
-import {  useParams } from "react-router-dom";
-import { useForm } from "react-hook-form";
-import axios from "axios";
+import React,{useState,useEffect} from 'react';
+import { useNavigate ,useParams} from "react-router-dom";
+import axios from 'axios';
+export const StudentEdit=()=>{
 
-export const StudentEdit = () => {
-  // const navigate = useNavigate();
-  const [student, setStudent] = useState({ todo: "" });
-  const { register, handleSubmit, formState: { errors } } = useForm();
-  const { id: StudentId } = useParams();
+    const navigate=useNavigate();
+    const [students,setStudents]=useState({title:"", brief:"",category:"",subCategory:""});
+    const { id: studentId } = useParams();
+console.log({ id: studentId });
+    const {title,name,gender,collegeName,mobile}=students;
+    useEffect(() => {
+        const token = localStorage.getItem("accessToken");
+        axios
+          .get(`http://localhost:3001/${studentId}`, {
+            headers: {
+              authorization: `Bearer ${token}`,
+            },
+          })
+          .then((response) => {
+            if (response.data.success) {
+              setStudents(response.data.data.students);
+            }
+          })
+          .catch((error) => console.error(error));
+      }, [studentId]);
 
-  
-
-  const handleStudentEdit = (e) => {
-    // e.preventDefault();
-    // if (student.name.length ===0) {
-    //     alert("name is required ");
-    //   return;
-    // }
-    const token = localStorage.getItem("accessToken");
-    axios
-      .put(`http://localhost:3001/students/${StudentId}`, student, {
-        headers: {
-          authorization: `Bearer ${token}`,
-        },
-      })
-      .then((response) => {
-        if (response.data.success) {
-            setStudent(response.data.data);
-         
+      const handleStudentEdit = (e) => {
+        e.preventDefault();
+        if (students.title.trim().length===0||students.name.trim().length===0 ||students.gender.trim().length===0 
+        ||students.collegeName.trim().length===0 ||students.mobile.trim().length===0
+        ) {
+          return;
         }
-      })
-      .catch((error) => console.error(error));
-  };
+        const token = localStorage.getItem("accessToken");
+        axios
+          .put(`http://localhost:3001/${students._id}`, students, {
+            headers: {
+              authorization: `Bearer ${token}`,
+            },
+          })
+          .then((response) => {
+            if (response.data.success) {
+              navigate("/students");
+            }
+          })
+          .catch((error) => console.error(error));
+      };
 
-//   const handleOnChange = (e) => {
-//     setTodo({ ...todo, [e.target.name]: e.target.value });
-//   };
+      const changeHandler = (e) => {
+        setStudents({ ...students, [e.target.name]: e.target.value });
+      };
 
-  return (
-    <form onSubmit={handleSubmit(handleStudentEdit)} className="form-group">
-    <div className="container-form"></div>
-     <div id="input-group">
-      <label>Title</label>
-      <select {...register("title")}>
-      <option value="">--select Title--</option>
-     <option value="Ms">Ms</option>
-      <option value="Mr">Mr</option>
-      <option value="Miss">Miss</option>
-    </select>
-      <small title="text-danger">
-        {errors?.title && errors.title.message}
-      </small>
-    </div>
-    <div id="input-group">
-      <label>Name</label>
-      <input name="name" type="text" {...register('name') }/>
-      <small className="text-danger">
-        {errors?.name && errors.name.message}
-      </small>
-    </div>
-    <div id="input-group">
-      <label>collegeName</label>
-      <input
-        type="text"
-        name="collegeName"
-        {...register('collegeName')}
-      />
-      <small id="text-danger">
-        {errors?.collegeName && errors.collegeName.message}
-      </small>
-    </div>
-    <div id="input-group">
-      <label>gender</label>
-      <select {...register("gender")}>
-      <option value="">--select gender--</option>
-     <option value="female">Female</option>
-      <option value="male">Male</option>
-      <option value="other">Other</option>
-    </select>
-      <small id="input-group">
-        {errors?.gender && errors.gender.message}
-      </small>
-    </div>
-    
-    <div id="input-group">
-      <label>Mobile</label>
-      <input name="mobile" type="number" {...register('mobile') }/>
-      <small className="text-danger">
-        {errors?.mobile && errors.mobile.message}
-      </small>
-    </div>
-    
-    <button className="btn btn-outline-success">Submit</button>
-  </form>  );
-};
+    return(
+      <div className='main'>
+        <div className='edit'>
+                <form id='edit' onSubmit={handleStudentEdit}>
+                  <h2>Here Edit your details</h2>
+                  <br/>
+                <div>
+                    <label>Title</label><br/>
+                    <input id="title" type="text" name="title" value={title} onChange={changeHandler}></input>
+                </div>
+                <br/>
+                <div>
+                    <label>Name</label><br/>
+                    <input id="name" type="text" name="name" value={name} onChange={changeHandler}></input>
+                </div>
+                <br/>
+                <div>
+                    <label>collegeName</label><br/>
+                    <input id="collegeName" type="text" name="collegeName" value={collegeName} onChange={changeHandler}></input>
+                </div>
+                <br/>
+                <div>
+                    <label>gender</label><br/>
+                    <input id="gender" type="text" name="gender" value={gender} onChange={changeHandler}></input>
+                </div>
+                <br/>
+                <br/>
+                <div>
+                    <label>mobile</label><br/>
+                    <input id="mobile" type="number" name="mobile" value={mobile} onChange={changeHandler}></input>
+                </div>
 
-
-//========================================================================
-
-
-
-
-// import { useEffect, useState } from "react";
-// import { useNavigate, useParams } from "react-router-dom";
-// import axios from "axios";
-
-// export const StudentEdit = () => {
-//   const navigate = useNavigate();
-//   const [student, setStudent] = useState("" );
-//   const { id: studentId } = useParams();
-
-//   useEffect(() => {
-//     const token = localStorage.getItem("accessToken");
-//     axios
-//       .get(`http://localhost:3001/students/${studentId}`, {
-//         headers: {
-//           authorization: `Bearer ${token}`,
-//         },
-//       })
-//       .then((response) => {
-//         if (response.data.success) {
-//           setStudent(response.data.data.student);
-//         }
-//       })
-//       .catch((error) => console.error(error));
-//   }, [studentId]);
-
-//   const handleStudentEdit = (e) => {
-//     e.preventDefault();
-//     // if (todo.todo.trim().length === 0) {
-//     //   return;
-//     // }
-//     const token = localStorage.getItem("accessToken");
-//     axios
-//       .put(`http://localhost:3001/students/${student._id}`, student, {
-//         headers: {
-//           authorization: `Bearer ${token}`,
-//         },
-//       })
-//       .then((response) => {
-//         if (response.data.success) {
-//           navigate("/todos");
-//         }
-//       })
-//       .catch((error) => console.error(error));
-//   };
-
-//   const handleOnChange = (e) => {
-//     setStudent({ ...student, [e.target.name]: e.target.value });
-//   };
-
-//   return (
-//     <form className="todo-form spaced-form" onSubmit={handleStudentEdit}>
-  
-//       <div className="input-group">
-//             <label htmlFor="name">What is your name?</label>
-//             <input
-//               type="text"
-//               name="name"
-//               id="name"
-//               placeholder="What is your name?"
-//               className="input-control"
-//               value={student.name}
-//               onChange={handleOnChange}
-//             />
-//           </div>
-//           <div className="input-group">
-//             <label htmlFor="collegeName">What is your collegeName?</label>
-//             <input
-//               type="text"
-//               name="collegeName"
-//               id="collegeName"
-//               placeholder="collegeName"
-//               className="input-control"
-//               value={student.collegeName}
-//               onChange={handleOnChange}
-//             />
-//           </div>
-//           <div className="input-group">
-//             <label htmlFor="gender">What is your gender?</label>
-//             <input
-//               type="text"
-//               name="gender"
-//               id="gender"
-//               placeholder="--- type your gender----"
-//               className="input-control"
-//               value={student.gender}
-//               onChange={handleOnChange}
-//             />
-//           </div>
-//           <div className="input-group">
-//             <label htmlFor="mobile">What is your mobile?</label>
-//             <input
-//               type="text"
-//               name="mobile"
-//               id="mobile"
-//               placeholder=" mobile"
-//               className="input-control"
-//               value={student.mobile}
-//               onChange={handleOnChange}
-//             />
-//           </div>
-//       <div className="input-group">
-//         <button type="submit" className="btn btn-primary">
-//           Submit
-//         </button>
-//       </div>
-//     </form>
-//   );
-// };
+                <div>
+                    <button id="submit" type="submit">Submit</button>
+                </div>
+                </form>
+        </div>
+        </div>
+    )
+}

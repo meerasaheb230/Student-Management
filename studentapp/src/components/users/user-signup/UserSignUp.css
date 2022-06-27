@@ -12,10 +12,10 @@
     min-height: 700px;
 
     background-position: center;
-    background-attachment: fixed;
-    position: static;
+   
     
-
+    
+    
 
 }
 
@@ -30,5 +30,9 @@
     margin: auto;
     border-radius: 20px;
     background: rgba(0, 0, 0, 0.4);
-    padding-top: 10rem;
+    padding-top: 15rem;
+    padding-top: -70rem;
+    padding-bottom: 20rem;
+    
+    
 }
